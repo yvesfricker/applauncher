@@ -1,0 +1,30 @@
+import AppKit
+import Foundation
+
+enum AppActivator {
+    static func activate(entry: ShortcutEntry) {
+        if let bundleIdentifier = entry.bundleIdentifier,
+           let running = NSRunningApplication.runningApplications(withBundleIdentifier: bundleIdentifier).first {
+            running.activate(options: [.activateAllWindows, .activateIgnoringOtherApps])
+            return
+        }
+
+        if let appURL = entry.appURL {
+            launch(url: appURL)
+            return
+        }
+
+        if let bundleIdentifier = entry.bundleIdentifier,
+           let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleIdentifier) {
+            launch(url: appURL)
+        }
+    }
+
+    private static func launch(url: URL) {
+        do {
+            try NSWorkspace.shared.launchApplication(at: url, options: [.default], configuration: [:])
+        } catch {
+            NSAlert(error: error).runModal()
+        }
+    }
+}
