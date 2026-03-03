@@ -19,10 +19,10 @@ struct SettingsView: View {
             }
 
             if store.entries.isEmpty {
-                EmptyStateView(
-                    title: "No shortcuts yet",
+                ContentUnavailableView(
+                    "No shortcuts yet",
                     systemImage: "keyboard",
-                    description: "Add a shortcut and assign an app to launch or focus."
+                    description: Text("Add a shortcut and assign an app to launch or focus.")
                 )
                 Spacer()
             } else {
@@ -38,27 +38,6 @@ struct SettingsView: View {
             }
         }
         .padding(20)
-    }
-}
-
-private struct EmptyStateView: View {
-    let title: String
-    let systemImage: String
-    let description: String
-
-    var body: some View {
-        VStack(spacing: 10) {
-            Image(systemName: systemImage)
-                .font(.system(size: 28, weight: .medium))
-                .foregroundStyle(.secondary)
-            Text(title)
-                .font(.headline)
-            Text(description)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity, minHeight: 160)
-        .padding(.vertical, 16)
     }
 }
 

@@ -21,14 +21,10 @@ enum AppActivator {
     }
 
     private static func launch(url: URL) {
-        let configuration = NSWorkspace.OpenConfiguration()
-        configuration.activates = true
-
-        NSWorkspace.shared.openApplication(at: url, configuration: configuration) { _, error in
-            guard let error else { return }
-            DispatchQueue.main.async {
-                NSAlert(error: error).runModal()
-            }
+        do {
+            try NSWorkspace.shared.launchApplication(at: url, options: [.default], configuration: [:])
+        } catch {
+            NSAlert(error: error).runModal()
         }
     }
 }
